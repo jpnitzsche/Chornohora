@@ -1,0 +1,44 @@
+---
+title: "Chornohora"
+author: "JN"
+date: "May 8, 2019"
+output: pdf_document
+---
+
+```{r}
+## Preparation
+
+rm(list=ls())
+
+#Working Directory
+workingDirectory <- "H:/R/chornohora"
+
+#Required packages
+requiredPackages <- c("rgdal", "dplyr", "plyr", "ggplot2", "rmarkdown", "knitr")
+
+#Install required packages
+new.packages <- requiredPackages[!(requiredPackages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) 
+  install.packages(new.packages)
+
+#Load required packages
+lapply(requiredPackages, library, character.only=T)
+```
+
+```{r}
+## Import Data
+
+# Read stand inventory data 2018
+filenames <- list.files(path = "H:/R/chornohora/data/csv", pattern = "*", full.names=TRUE)
+stand_inv_2018 <- ldply(filenames, read.csv, sep =";")
+# Select relevant columns
+stand_inv_2018 <- stand_inv_2018 %>%
+  select(f_id, aj, bnr, ba, ach, dec, d1, d2, d.mit, P, ic1, ic2, ic3, ic4, ic5, ic6, H, kag, d7,
+         bem1, bem2, bem3, nach.bnr)
+
+#Read stand data from 2006 and 2012 inventories (source: GitHub "spruce_transition/data/analysis/data_cleaned.csv")
+stand_inv_06_12 <- read.csv('H:/R/chornohora/data/data_cleaned.csv', sep = ";", header = TRUE)
+
+```
+
+
